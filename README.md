@@ -8,7 +8,7 @@ The C3PO project is an initiative to develop a robot head (inspired by C3PO from
 
 2. **Transcribe Audio**: Transcribes the entire audio into text and temporarily prints it.
 
-Audio Recording:
+## Code Structure
 
 1. **Audio Recording**:
   - The gravar_audio function sets up the audio stream using the pyaudio library.

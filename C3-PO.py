@@ -1,12 +1,7 @@
 import pyaudio
 import wave
 import speech_recognition as sr
-import openai
-from gtts import gTTS
-import os
-
-# Configurações da OpenAI
-openai.api_key = 'sua-chave-api'
+import ollama
 
 def gravar_audio():
     audio = pyaudio.PyAudio()
@@ -59,5 +54,15 @@ def transcrever_audio(arquivo_audio):
         print(f"Erro: {e}")
         return None
 
-arquivo_audio  = gravar_audio()
-transcrever_audio(arquivo_audio)
+def enviar_mensagem(mensagem):
+    #Criando a conversa com o Ollama
+    resposta = ollama.chat(model='llama2', messages=[
+        {'role': 'user', 'content': f'Responda rapidamente e APENAS em português:  {mensagem}'},
+    ])
+
+    return resposta['message']['content']
+
+arquivo_audio = gravar_audio()
+texto_transcrito = transcrever_audio(arquivo_audio)
+resposta_ia = enviar_mensagem(texto_transcrito)
+print(resposta_ia)

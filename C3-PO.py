@@ -57,7 +57,7 @@ def transcrever_audio(arquivo_audio):
 def enviar_mensagem(mensagem):
     #Criando a conversa com o Ollama
     resposta = ollama.chat(model='llama2', messages=[
-        {'role': 'user', 'content': f'Responda rapidamente e APENAS em português:  {mensagem}'},
+        {'role': 'user', 'content': f'Responda em UM parágrafo e APENAS em português:  {mensagem}'},
     ])
 
     return resposta['message']['content']

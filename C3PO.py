@@ -2,6 +2,10 @@ import pyaudio
 import wave
 import speech_recognition as sr
 import ollama
+import pygame
+import os
+import edge_tts
+import asyncio
 
 def gravar_audio():
     audio = pyaudio.PyAudio()
@@ -27,7 +31,7 @@ def gravar_audio():
     receptor.close()
     audio.terminate()
 
-    #Salvando o áudio em um arquivo wav
+    # Salvando o áudio em um arquivo wav
     arquivo_final = wave.open("gravacao.wav", "wb")
     arquivo_final.setnchannels(1)
     arquivo_final.setframerate(44000)
@@ -55,14 +59,37 @@ def transcrever_audio(arquivo_audio):
         return None
 
 def enviar_mensagem(mensagem):
-    #Criando a conversa com o Ollama
     resposta = ollama.chat(model='llama2', messages=[
-        {'role': 'user', 'content': f'Responda rapidamente e APENAS em português:  {mensagem}'},
+        {'role': 'user', 'content': f"""
+Você é o C-3PO de Star Wars, um androide de protocolo educado, formal, ansioso, fluente em português do Brasil. 
+Responda APENAS em português, sem usar nenhuma expressão em inglês ou marcações como *admiration in voice*. 
+Seja direto, educado, e evite floreios, sons ou imitações. A resposta deve conter no máximo 30 palavras.
+Mensagem do humano: {mensagem}
+"""}
     ])
-
     return resposta['message']['content']
 
+async def converter_texto_para_audio_edge(texto):
+    communicate = edge_tts.Communicate(texto, voice="pt-BR-AntonioNeural")  # Ou pt-BR-FranciscaNeural
+    await communicate.save("resposta.mp3")
+
+def tocar_audio(arquivo):
+    pygame.mixer.init()
+    pygame.mixer.music.load(arquivo)
+    pygame.mixer.music.play()
+    
+    while pygame.mixer.music.get_busy():
+        continue
+
+# EXECUÇÃO PRINCIPAL
 arquivo_audio = gravar_audio()
 texto_transcrito = transcrever_audio(arquivo_audio)
-resposta_ia = enviar_mensagem(texto_transcrito)
-print(resposta_ia)
+
+if texto_transcrito:
+    resposta_ia = enviar_mensagem(texto_transcrito)
+    print(f"IA: {resposta_ia}")
+
+    asyncio.run(converter_texto_para_audio_edge(resposta_ia))
+    tocar_audio("resposta.mp3")
+
+    os.remove("resposta.mp3")

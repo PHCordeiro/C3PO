@@ -6,6 +6,7 @@ import pygame
 import os
 import edge_tts
 import asyncio
+import whisper
 
 def gravar_audio():
     audio = pyaudio.PyAudio()
@@ -13,7 +14,7 @@ def gravar_audio():
         input=True,
         format=pyaudio.paInt16,
         channels=1,
-        rate=44000,
+        rate=16000,
         frames_per_buffer=1024,
     )
 
@@ -31,46 +32,32 @@ def gravar_audio():
     receptor.close()
     audio.terminate()
 
-    # Salvando o áudio em um arquivo wav
     arquivo_final = wave.open("gravacao.wav", "wb")
     arquivo_final.setnchannels(1)
-    arquivo_final.setframerate(44000)
+    arquivo_final.setframerate(16000)
     arquivo_final.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
     arquivo_final.writeframes(b"".join(frames))
     arquivo_final.close()
 
     return "gravacao.wav"
 
-def transcrever_audio(arquivo_audio):
-    recognizer = sr.Recognizer()
-
-    with sr.AudioFile(arquivo_audio) as source:
-        audio_data = recognizer.record(source)
-
-    try:
-        text = recognizer.recognize_google(audio_data, language='pt-BR')
-        print(f"Transcrição: {text}")
-        return text
-    except sr.UnknownValueError:
-        print("Fala direito porra!")
-        return None
-    except sr.RequestError as e:
-        print(f"Erro: {e}")
-        return None
+def transcrever_com_whisper_local(arquivo_audio):
+    modelo = whisper.load_model("tiny")  
+    resultado = modelo.transcribe(arquivo_audio, language='pt')
+    print(f"Transcrição: {resultado['text']}")
+    return resultado['text']
 
 def enviar_mensagem(mensagem):
     resposta = ollama.chat(model='llama2', messages=[
         {'role': 'user', 'content': f"""
-Você é o C-3PO de Star Wars, um androide de protocolo educado, formal, ansioso, fluente em português do Brasil. 
-Responda APENAS em português, sem usar nenhuma expressão em inglês ou marcações como *admiration in voice*. 
-Seja direto, educado, e evite floreios, sons ou imitações. A resposta deve conter no máximo 30 palavras.
-Mensagem do humano: {mensagem}
+Você é o C-3PO, androide protocolar, respondendo rápido, em português do Brasil, máximo 15 palavras, direto, sem floreios.
+Mensagem: {mensagem}
 """}
     ])
     return resposta['message']['content']
 
 async def converter_texto_para_audio_edge(texto):
-    communicate = edge_tts.Communicate(texto, voice="pt-BR-AntonioNeural")  # Ou pt-BR-FranciscaNeural
+    communicate = edge_tts.Communicate(texto, voice="pt-BR-AntonioNeural") 
     await communicate.save("resposta.mp3")
 
 def tocar_audio(arquivo):
@@ -81,9 +68,8 @@ def tocar_audio(arquivo):
     while pygame.mixer.music.get_busy():
         continue
 
-# EXECUÇÃO PRINCIPAL
 arquivo_audio = gravar_audio()
-texto_transcrito = transcrever_audio(arquivo_audio)
+texto_transcrito = transcrever_com_whisper_local(arquivo_audio)
 
 if texto_transcrito:
     resposta_ia = enviar_mensagem(texto_transcrito)

@@ -1,0 +1,27 @@
+--- Personagens ---
+Obi-Wan Kenobi: Mestre Jedi que lutou nas Guerras Clônicas, mentor de Anakin e Luke Skywalker.
+Anakin Skywalker: Cavaleiro Jedi, caiu para o lado sombrio e se tornou Darth Vader.
+Yoda: Grande Mestre Jedi, conhecido por sua sabedoria e longevidade.
+Darth Sidious / Palpatine: Lorde Sith que manipulou a República até se tornar Imperador.
+Luke Skywalker: Filho de Anakin, herói da Aliança Rebelde e restaurador da Ordem Jedi.
+Leia Organa: Líder da Aliança Rebelde, princesa de Alderaan, irmã de Luke.
+Han Solo: Contrabandista e capitão da Millennium Falcon, aliado da Rebelião.
+Chewbacca: Wookiee, co-piloto da Millennium Falcon e amigo leal de Han Solo.
+R2-D2: Droide astromecânico leal e corajoso, presente em todas as grandes batalhas.
+C-3PO: Droide de protocolo especializado em tradução, parceiro de R2-D2.
+Mandalorianos: Guerreiros com armaduras de beskar, conhecidos por sua honra e cultura marcial.
+
+--- Planetas ---
+Tatooine: Planeta desértico, lar de Anakin e Luke Skywalker.
+Coruscant: Capital da República Galáctica e depois do Império.
+Naboo: Planeta natal de Padmé Amidala e Palpatine.
+Kamino: Mundo oceânico onde foram criados os clones da República.
+Mustafar: Planeta vulcânico onde Anakin se tornou Darth Vader.
+Endor: Lua florestal onde ocorreu a batalha contra a segunda Estrela da Morte.
+
+--- Eventos ---
+Guerras Clônicas: Conflito entre a República e os Separatistas, com exércitos de clones e droides.
+Ordem 66: Comando secreto que fez os clones traírem e eliminarem os Jedi.
+Batalha de Yavin: Destruição da primeira Estrela da Morte pela Aliança Rebelde.
+Batalha de Endor: Vitória da Rebelião contra o Império e morte de Palpatine (temporária).
+Ascensão do Império: Transição da República para o Império Galáctico sob Palpatine.
